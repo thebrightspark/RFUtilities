@@ -1,5 +1,6 @@
 package com.brightspark.rfutilities;
 
+import com.brightspark.rfutilities.handler.ConfigHandler;
 import com.brightspark.rfutilities.init.RFUBlocks;
 import com.brightspark.rfutilities.init.RFUItems;
 import com.brightspark.rfutilities.init.RFURecipes;
@@ -7,6 +8,7 @@ import com.brightspark.rfutilities.reference.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -39,6 +41,9 @@ public class RFUtilities
     {
         //Initialize item, blocks and configs here
 
+        ConfigHandler.init(event.getSuggestedConfigurationFile());
+        MinecraftForge.EVENT_BUS.register(new ConfigHandler());
+
         RFUItems.init();
         RFUBlocks.init();
         if(event.getSide() == Side.CLIENT)
@@ -53,6 +58,7 @@ public class RFUtilities
     {
         //Initialize textures/models, GUIs, tile entities, recipies, event handlers here
 
+        RFUBlocks.regTileEntities();
         RFURecipes.init();
     }
 
