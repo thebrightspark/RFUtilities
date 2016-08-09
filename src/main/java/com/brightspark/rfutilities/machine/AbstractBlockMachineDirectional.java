@@ -1,9 +1,7 @@
 package com.brightspark.rfutilities.machine;
 
-import com.brightspark.rfutilities.util.LogHelper;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +21,15 @@ public abstract class AbstractBlockMachineDirectional<T extends TileMachine> ext
     {
         super(name);
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
+
+    public void setFacingWithWrench(World world, BlockPos pos, IBlockState state, EnumFacing facing)
+    {
+        EnumFacing currentFacing = state.getValue(FACING);
+        if(facing == currentFacing)
+            world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()));
+        else
+            world.setBlockState(pos, state.withProperty(FACING, facing));
     }
 
     /**

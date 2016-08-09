@@ -1,6 +1,7 @@
 package com.brightspark.rfutilities.item;
 
 import com.brightspark.rfutilities.machine.AbstractBlockMachine;
+import com.brightspark.rfutilities.machine.AbstractBlockMachineDirectional;
 import com.brightspark.rfutilities.reference.Names;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -25,16 +26,25 @@ public class ItemWrench extends ItemBasic
      */
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        //Remove the machine block
-        if(player.isSneaking())
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if(block instanceof AbstractBlockMachine)
         {
-            IBlockState state = world.getBlockState(pos);
-            Block block = state.getBlock();
-            if(block instanceof AbstractBlockMachine && ((AbstractBlockMachine) block).canPickupWithWrench())
+            if(player.isSneaking())
             {
-                if(block.removedByPlayer(state, world, pos, player, true))
-                    block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), stack);
-                return EnumActionResult.FAIL;
+                //Remove the block if it's a machine
+                if(((AbstractBlockMachine) block).canPickupWithWrench())
+                {
+                    if(block.removedByPlayer(state, world, pos, player, true))
+                        block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), stack);
+                    return EnumActionResult.FAIL;
+                }
+            }
+            else
+            {
+                //Set the facing of the block if it's a machine that can be rotated.
+                if(block instanceof AbstractBlockMachineDirectional)
+                    ((AbstractBlockMachineDirectional)block).setFacingWithWrench(world, pos, state, facing);
             }
         }
         return EnumActionResult.PASS;
