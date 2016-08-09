@@ -1,5 +1,10 @@
 {
 	"variants": {
-		"normal": { "model": "rfutilities:blockItemDetector" }
+        "facing=down": { "model": "rfutilities:blockItemDetector", "x": 90 },
+        "facing=up": { "model": "rfutilities:blockItemDetector", "x": 270 },
+        "facing=north": { "model": "rfutilities:blockItemDetector"},
+        "facing=south": { "model": "rfutilities:blockItemDetector", "y": 180 },
+        "facing=west": { "model": "rfutilities:blockItemDetector", "y": 270 },
+        "facing=east": { "model": "rfutilities:blockItemDetector", "y": 90 }
 	}
 }

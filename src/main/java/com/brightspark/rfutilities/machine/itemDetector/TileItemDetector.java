@@ -38,7 +38,8 @@ public class TileItemDetector extends TileMachine implements ITickable
     public void update()
     {
         //Set the redstone output dependent on the number of items
-        List<EntityItem> itemEntities = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up()));
+        IBlockState state = worldObj.getBlockState(pos);
+        List<EntityItem> itemEntities = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.offset(state.getValue(BlockItemDetector.FACING))));
         if(itemEntities.size() == 0)
             redstoneOutput = 0;
         else if(itemEntities.size() >= 15)
@@ -58,7 +59,6 @@ public class TileItemDetector extends TileMachine implements ITickable
             redstoneOutput = count;
         }
 
-        IBlockState state = worldObj.getBlockState(pos);
         worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), state, state, 3);
     }
 }

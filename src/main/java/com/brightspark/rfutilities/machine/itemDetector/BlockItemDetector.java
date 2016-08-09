@@ -1,6 +1,6 @@
 package com.brightspark.rfutilities.machine.itemDetector;
 
-import com.brightspark.rfutilities.machine.AbstractBlockMachine;
+import com.brightspark.rfutilities.machine.AbstractBlockMachineDirectional;
 import com.brightspark.rfutilities.reference.Names;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockItemDetector extends AbstractBlockMachine<TileItemDetector>
+public class BlockItemDetector extends AbstractBlockMachineDirectional<TileItemDetector>
 {
     public BlockItemDetector()
     {
