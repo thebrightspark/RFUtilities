@@ -18,7 +18,17 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
         ALL,
         INPUT,
         OUTPUT,
-        NONE
+        NONE;
+
+        public boolean canInput()
+        {
+            return this == INPUT || this == ALL;
+        }
+
+        public boolean canOutput()
+        {
+            return this == OUTPUT || this == ALL;
+        }
     }
 
     protected HashMap<EnumFacing, SideEnergyPerm>  energySides = new HashMap<EnumFacing, SideEnergyPerm>(6);
@@ -27,14 +37,13 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
     public TileMachine()
     {
         //Machine default storage
-        storage = new EnergyStorage(Config.machineEnergyStorage, Config.machineEnergyTransferRate);
+        this(Config.machineEnergyStorage, Config.machineEnergyTransferRate);
     }
 
     public TileMachine(EnergyStorage storage)
     {
-        this.storage = new EnergyStorage(storage.getMaxEnergyStored(), storage.getMaxReceive(), storage.getMaxExtract());
+        this(storage.getMaxEnergyStored(), storage.getMaxReceive(), storage.getMaxExtract());
         this.storage.setEnergyStored(storage.getEnergyStored());
-        initSides();
     }
 
     public TileMachine(int capacity)
@@ -53,11 +62,42 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
         initSides();
     }
 
-    private void initSides()
+    protected void initSides()
     {
         for(EnumFacing side : EnumFacing.VALUES)
-            energySides.put(side, SideEnergyPerm.ALL);
+            energySides.put(side, SideEnergyPerm.INPUT);
     }
+
+    public boolean hasEnergy()
+    {
+        return storage.getEnergyStored() > 0;
+    }
+
+    public boolean isEnergyFull()
+    {
+        return storage.getEnergyStored() >= storage.getMaxEnergyStored();
+    }
+
+    public boolean canExtractEnergy(EnumFacing side)
+    {
+        return hasEnergy() && energySides.get(side).canOutput();
+    }
+
+    public boolean canReceiveEnergy(EnumFacing side)
+    {
+        return !isEnergyFull() && energySides.get(side).canInput();
+    }
+
+    /**
+     * Gets a float between 0 and 1 of how full the energy storage is (1 being full and 0 empty).
+     * @return Value between 0 and 1.
+     */
+    public float getEnergyPercentage()
+    {
+        return (float) storage.getEnergyStored() / (float) storage.getMaxEnergyStored();
+    }
+
+    /* NBT */
 
     public void readFromNBT(NBTTagCompound nbt)
     {
@@ -71,6 +111,8 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
         storage.writeToNBT(nbt);
         return nbt;
     }
+
+    /* Overrides */
 
     @Override
     public NBTTagCompound getUpdateTag()
@@ -100,8 +142,7 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
-        SideEnergyPerm perm = energySides.get(from);
-        if(perm == SideEnergyPerm.ALL || perm == SideEnergyPerm.INPUT)
+        if(energySides.get(from).canInput())
             return storage.receiveEnergy(maxReceive, simulate);
         return 0;
     }

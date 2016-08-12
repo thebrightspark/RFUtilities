@@ -12,5 +12,7 @@ public class Names
     public static class Blocks
     {
         public static final String ITEM_DETECTOR = "blockItemDetector";
+
+        public static final String CREATIVE_ENERGY_STORAGE = "blockCreativeEnergyStorage";
     }
 }

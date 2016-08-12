@@ -8,6 +8,7 @@ public abstract class AbstractBlockMachine<T extends TileMachine> extends Abstra
     public AbstractBlockMachine(String name)
     {
         super(name);
+        setHasGui();
     }
 
     public boolean canPickupWithWrench()

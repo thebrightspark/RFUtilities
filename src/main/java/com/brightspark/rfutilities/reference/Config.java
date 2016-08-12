@@ -14,6 +14,6 @@ public class Config
      */
 
     //General
-    public static int machineEnergyStorage = 100000;
+    public static int machineEnergyStorage = 10000;
     public static int machineEnergyTransferRate = 100;
 }

@@ -44,7 +44,7 @@ public abstract class AbstractBlockContainer extends BlockContainer
     {
         if(!hasGui)
             return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
-        if(!world.isRemote && !player.isSneaking())
+        if(!player.isSneaking())
             player.openGui(RFUtilities.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
