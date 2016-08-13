@@ -36,6 +36,7 @@ public class GuiEnergyStorage extends GuiScreen
         drawDefaultBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
+        //TODO: Fix the background rendering
         //Draw gui background
         mc.getTextureManager().bindTexture(texture);
         int x = (width - xSize) / 2;

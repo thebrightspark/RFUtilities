@@ -1,5 +1,6 @@
 package com.brightspark.rfutilities.machine.energyStorage;
 
+import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import com.brightspark.rfutilities.machine.CreativeEnergyStorage;
 import com.brightspark.rfutilities.machine.TileMachine;
@@ -10,7 +11,7 @@ import net.minecraft.util.ITickable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TileEnergyStorage extends TileMachine implements ITickable
+public class TileEnergyStorage extends TileMachine implements ITickable, IEnergyProvider
 {
     private boolean doneOnFirstTick = false;
     private Map<EnumFacing, IEnergyReceiver> receivers = new HashMap<EnumFacing, IEnergyReceiver>(6);
@@ -56,5 +57,19 @@ public class TileEnergyStorage extends TileMachine implements ITickable
                 if(canExtractEnergy(side))
                     //Outputs energy to the receiver
                     storage.extractEnergy(receivers.get(side).receiveEnergy(side.getOpposite(), storage.extractEnergy(storage.getMaxExtract(), true), false), false);
+    }
+
+    public boolean canExtractEnergy(EnumFacing side)
+    {
+        return hasEnergy() && energySides.get(side).canOutput();
+    }
+
+    @Override
+    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
+    {
+        if(canExtractEnergy(from))
+            return storage.extractEnergy(maxExtract, simulate);
+        else
+            return 0;
     }
 }

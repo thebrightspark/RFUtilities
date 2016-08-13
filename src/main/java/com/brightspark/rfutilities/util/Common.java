@@ -34,4 +34,20 @@ public class Common
     {
         mc.effectRenderer.addEffect(particle);
     }
+
+    /**
+     * Returns a string of the inputted number with commas added to group the digits.
+     */
+    public static String addDigitGrouping(int number)
+    {
+        return addDigitGrouping(Integer.toString(number));
+    }
+
+    public static String addDigitGrouping(String number)
+    {
+        String output = number;
+        for(int i = number.length() - 3; i > 0; i -= 3)
+            output = output.substring(0, i) + "," + output.substring(i);
+        return output;
+    }
 }

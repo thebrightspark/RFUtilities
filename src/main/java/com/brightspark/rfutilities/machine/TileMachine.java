@@ -42,8 +42,8 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
 
     public TileMachine(EnergyStorage storage)
     {
-        this(storage.getMaxEnergyStored(), storage.getMaxReceive(), storage.getMaxExtract());
-        this.storage.setEnergyStored(storage.getEnergyStored());
+        this.storage = storage;
+        initSides();
     }
 
     public TileMachine(int capacity)
@@ -78,14 +78,25 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
         return storage.getEnergyStored() >= storage.getMaxEnergyStored();
     }
 
-    public boolean canExtractEnergy(EnumFacing side)
-    {
-        return hasEnergy() && energySides.get(side).canOutput();
-    }
-
     public boolean canReceiveEnergy(EnumFacing side)
     {
         return !isEnergyFull() && energySides.get(side).canInput();
+    }
+
+    public int getMaxExtract(EnumFacing side)
+    {
+        if(side == null || energySides.get(side).canOutput())
+            return storage.getMaxExtract();
+        else
+            return 0;
+    }
+
+    public int getMaxReceieve(EnumFacing side)
+    {
+        if(side == null || energySides.get(side).canInput())
+            return storage.getMaxReceive();
+        else
+            return 0;
     }
 
     /**
@@ -142,9 +153,10 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
-        if(energySides.get(from).canInput())
+        if(canReceiveEnergy(from))
             return storage.receiveEnergy(maxReceive, simulate);
-        return 0;
+        else
+            return 0;
     }
 
     @Override

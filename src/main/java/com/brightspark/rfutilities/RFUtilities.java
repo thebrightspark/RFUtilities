@@ -6,10 +6,12 @@ import com.brightspark.rfutilities.init.RFUBlocks;
 import com.brightspark.rfutilities.init.RFUItems;
 import com.brightspark.rfutilities.init.RFURecipes;
 import com.brightspark.rfutilities.reference.Reference;
+import com.brightspark.rfutilities.waila.Waila;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -64,6 +66,9 @@ public class RFUtilities
         RFURecipes.init();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+
+        if(Loader.isModLoaded("Waila"))
+            Waila.init();
     }
 
     @Mod.EventHandler

@@ -6,6 +6,8 @@ item.itemFireballGun.name=Fireball Launcher
 
 tile.blockItemDetector.name=Item Detector
 
+tile.blockCreativeEnergyStorage.name=Creative Energy Storage
+
 //Entiies
 
 
@@ -16,3 +18,5 @@ tooltip.shift=Hold SHIFT for extra info
 
 //Misc
 
+waila.energyStorage.stored=Energy:
+waila.energyStorage.inOut=Max Input/Output:
