@@ -3,6 +3,7 @@ package com.brightspark.rfutilities.machine;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import com.brightspark.rfutilities.reference.Config;
+import com.brightspark.rfutilities.util.Common;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -103,9 +104,14 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
      * Gets a float between 0 and 1 of how full the energy storage is (1 being full and 0 empty).
      * @return Value between 0 and 1.
      */
-    public float getEnergyPercentage()
+    public float getEnergyPercentFloat()
     {
         return (float) storage.getEnergyStored() / (float) storage.getMaxEnergyStored();
+    }
+
+    public String getEnergyPercentString()
+    {
+        return Math.round(getEnergyPercentFloat() * 100) + "%";
     }
 
     /* NBT */

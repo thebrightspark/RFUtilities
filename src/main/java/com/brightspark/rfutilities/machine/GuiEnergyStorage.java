@@ -1,23 +1,24 @@
 package com.brightspark.rfutilities.machine;
 
 import com.brightspark.rfutilities.reference.Reference;
+import com.brightspark.rfutilities.util.Common;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiEnergyStorage extends GuiScreen
 {
     private static final ResourceLocation texture = new ResourceLocation(Reference.MOD_ID, Reference.GUI_TEXTURE_DIR + "energyStorage.png");
     private TileMachine machine;
-    private int xSize = 31;
-    private int ySize = 66;
-    private int xBarSize = 15;
-    private int yBarSize = 50;
+    private int xSize = 78;
+    private int ySize = 147;
+    private int xBarSize = 30;
+    private int yBarSize = 100;
 
     public GuiEnergyStorage(TileMachine machine)
     {
         this.machine = machine;
-        //setGuiSize(64, 96);
     }
 
     /**
@@ -36,7 +37,6 @@ public class GuiEnergyStorage extends GuiScreen
         drawDefaultBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        //TODO: Fix the background rendering
         //Draw gui background
         mc.getTextureManager().bindTexture(texture);
         int x = (width - xSize) / 2;
@@ -44,12 +44,15 @@ public class GuiEnergyStorage extends GuiScreen
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
         //Draw power bar
-        //int pixelsHigh = Math.round(yBarSize * machine.getEnergyPercentage()); //The energy bar is 50 pixels high
-        //int correctYPos = yBarSize - pixelsHigh;
-        //drawTexturedModalRect(x + 8, y + 8 + correctYPos, 31, correctYPos, xBarSize, pixelsHigh);
+        int pixelsHigh = Math.round(yBarSize * machine.getEnergyPercentFloat());
+        int correctYPos = yBarSize - pixelsHigh;
+        drawTexturedModalRect(x + 24, y + 24 + correctYPos, 78, correctYPos, xBarSize, pixelsHigh);
 
-        //drawCenteredString();
-
-
+        //Draw text
+        int textColour = 0xBBBBBB;
+        drawCenteredString(fontRendererObj, machine.getBlockType().getLocalizedName(), x + 39, y + 3, textColour);
+        drawCenteredString(fontRendererObj, Common.addDigitGrouping(machine.getMaxEnergyStored(null)), x + 39, y + 13, textColour);
+        drawCenteredString(fontRendererObj, Common.addDigitGrouping(machine.getEnergyStored(null)), x + 39, y + 127, textColour);
+        drawCenteredString(fontRendererObj, machine.getEnergyPercentString(), x + 39, y + 137, textColour);
     }
 }

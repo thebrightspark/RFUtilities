@@ -16,6 +16,10 @@ tile.blockCreativeEnergyStorage.name=Creative Energy Storage
 
 tooltip.shift=Hold SHIFT for extra info
 
+//GUIs
+
+gui.energyStorage.max=Max:
+
 //Misc
 
 waila.energyStorage.stored=Energy:

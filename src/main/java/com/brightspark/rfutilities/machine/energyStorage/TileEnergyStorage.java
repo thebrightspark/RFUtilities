@@ -44,6 +44,11 @@ public class TileEnergyStorage extends TileMachine implements ITickable, IEnergy
         }
     }
 
+    private void sendEnergy(IEnergyReceiver receiver, EnumFacing side)
+    {
+        storage.extractEnergy(receiver.receiveEnergy(side.getOpposite(), storage.extractEnergy(storage.getMaxExtract(), true), false), false);
+    }
+
     @Override
     public void update()
     {
@@ -54,9 +59,17 @@ public class TileEnergyStorage extends TileMachine implements ITickable, IEnergy
         //Output to adjacent acceptors
         if(hasEnergy())
             for(EnumFacing side : receivers.keySet())
-                if(canExtractEnergy(side))
-                    //Outputs energy to the receiver
-                    storage.extractEnergy(receivers.get(side).receiveEnergy(side.getOpposite(), storage.extractEnergy(storage.getMaxExtract(), true), false), false);
+            {
+                IEnergyReceiver r = receivers.get(side);
+                if(r instanceof TileMachine)
+                {
+                    if(((TileMachine) r).canReceiveEnergy(side) && canExtractEnergy(side))
+                        //Outputs energy to the receiver
+                        sendEnergy(r, side);
+                }
+                else if(canExtractEnergy(side))
+                    sendEnergy(r, side);
+            }
     }
 
     public boolean canExtractEnergy(EnumFacing side)

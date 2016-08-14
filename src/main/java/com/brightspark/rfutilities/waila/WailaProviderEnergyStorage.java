@@ -39,7 +39,7 @@ public class WailaProviderEnergyStorage implements IWailaDataProvider
         {
             TileMachine machine = (TileMachine) te;
             list.add(I18n.format(LANG_PRE + "stored"));
-            list.add(Math.round(machine.getEnergyPercentage() * 100) + "%");
+            list.add(machine.getEnergyPercentString());
             list.add(Common.addDigitGrouping(machine.getEnergyStored(null)) + " / " + Common.addDigitGrouping(machine.getMaxEnergyStored(null)));
             list.add(I18n.format(LANG_PRE + "inOut"));
             list.add(Common.addDigitGrouping(machine.getMaxReceieve(null)) + " / " + Common.addDigitGrouping(machine.getMaxExtract(null)));

@@ -42,7 +42,7 @@ public class TileItemDetector extends TileMachine implements ITickable
 
     private boolean hasEnoughPower()
     {
-        return storage.getEnergyStored() > passiveEnergyUse;
+        return storage.getEnergyStored() >= passiveEnergyUse;
     }
 
     @Override
