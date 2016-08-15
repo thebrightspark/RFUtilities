@@ -3,7 +3,10 @@ package com.brightspark.rfutilities.machine;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import com.brightspark.rfutilities.reference.Config;
+import com.brightspark.rfutilities.util.LogHelper;
+import com.brightspark.rfutilities.util.NBTHelper;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -75,6 +78,8 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
 
     protected HashMap<EnumFacing, SideEnergyPerm>  energySides = new HashMap<EnumFacing, SideEnergyPerm>(6);
     protected EnergyStorage storage;
+    //This is used in block.getDrops() so that the energy is only saved to the ItemStack when a wrench is used.
+    public boolean usedWrenchToBreak = false;
 
     public TileMachine()
     {
@@ -182,6 +187,20 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
     }
 
     /* NBT */
+
+    public static final String KEY_STACK_ENERGY = "stackEnergy";
+
+    public void writeEnergyToStack(ItemStack stack)
+    {
+        LogHelper.info("Machine Energy (write): " + storage.getEnergyStored());
+        NBTHelper.setInteger(stack, KEY_STACK_ENERGY, storage.getEnergyStored());
+    }
+
+    public void readEnergyFromStack(ItemStack stack)
+    {
+        storage.setEnergyStored(NBTHelper.getInt(stack, KEY_STACK_ENERGY));
+        LogHelper.info("Machine Energy (read): " + storage.getEnergyStored());
+    }
 
     public void readFromNBT(NBTTagCompound nbt)
     {

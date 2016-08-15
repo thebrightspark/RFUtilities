@@ -89,7 +89,6 @@ public class ItemWrench extends ItemBasic
     public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         //This method is not called server-side
-        LogHelper.info("Block Clicked First");
         if(!player.isSneaking())
         {
             IBlockState state = world.getBlockState(pos);
@@ -128,9 +127,10 @@ public class ItemWrench extends ItemBasic
         {
             IBlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
-            if(block instanceof AbstractBlockMachine && ((AbstractBlockMachine) block).canPickupWithWrench())
+            if(block instanceof AbstractBlockMachine && ((AbstractBlockMachine)block).canPickupWithWrench())
             {
                 //Remove the block if it's a machine
+                ((AbstractBlockMachine)block).getTileEntity(world, pos).usedWrenchToBreak = true;
                 if(block.removedByPlayer(state, world, pos, player, true))
                     block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), stack);
                 return EnumActionResult.SUCCESS;
