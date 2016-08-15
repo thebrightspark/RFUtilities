@@ -2,6 +2,12 @@
 
 item.itemFireballGun.name=Fireball Launcher
 
+item.itemWrench.name=Wrench
+wrenchMode.mode=Mode:
+wrenchMode.turn=Turn
+wrenchMode.configSide=Configure
+
+
 //Blocks
 
 tile.blockItemDetector.name=Item Detector
@@ -15,6 +21,12 @@ tile.blockCreativeEnergyStorage.name=Creative Energy Storage
 //Generic
 
 tooltip.shift=Hold SHIFT for extra info
+
+sideEnergyPerm.mode=Side %s Permission:
+sideEnergyPerm.all=All
+sideEnergyPerm.input=Input
+sideEnergyPerm.output=Output
+sideEnergyPerm.none=None
 
 //GUIs
 

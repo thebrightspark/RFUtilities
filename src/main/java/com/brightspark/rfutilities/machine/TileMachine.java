@@ -3,23 +3,52 @@ package com.brightspark.rfutilities.machine;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import com.brightspark.rfutilities.reference.Config;
-import com.brightspark.rfutilities.util.Common;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class TileMachine extends TileEntity implements IEnergyReceiver
 {
-    protected enum SideEnergyPerm
+    public enum SideEnergyPerm
     {
-        ALL,
-        INPUT,
-        OUTPUT,
-        NONE;
+        ALL(0, "all"),
+        INPUT(1, "input"),
+        OUTPUT(2, "output"),
+        NONE(3, "none");
+
+        private static final String LANG = "sideEnergyPerm.";
+        private static SideEnergyPerm[] allPerms = new SideEnergyPerm[4];
+        public final int id;
+        public final String unlocName;
+
+        static
+        {
+            //Create array of all perms
+            for(SideEnergyPerm perm : values())
+                allPerms[perm.id] = perm;
+        }
+
+        SideEnergyPerm(int id, String unlocName)
+        {
+            this.id = id;
+            this.unlocName = unlocName;
+        }
+
+        public static SideEnergyPerm getById(int id)
+        {
+            return id < 0 || id > allPerms.length - 1 ? null : allPerms[id];
+        }
+
+        public SideEnergyPerm getNextPerm()
+        {
+            return id + 1 > allPerms.length - 1 ? getById(0) : getById(id + 1);
+        }
 
         public boolean canInput()
         {
@@ -29,6 +58,18 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
         public boolean canOutput()
         {
             return this == OUTPUT || this == ALL;
+        }
+
+        public String getLocalisedName()
+        {
+            return I18n.format(LANG + unlocName);
+        }
+
+        public String getChatDisplay(EnumFacing side)
+        {
+            String sideText = side.getName();
+            sideText = sideText.substring(0, 1).toUpperCase() + sideText.substring(1);
+            return TextFormatting.BLUE + "[" + I18n.format(LANG + "mode", sideText) + " " + TextFormatting.DARK_AQUA + I18n.format(LANG + unlocName) + TextFormatting.BLUE + "]" + TextFormatting.RESET;
         }
     }
 
@@ -112,6 +153,32 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
     public String getEnergyPercentString()
     {
         return Math.round(getEnergyPercentFloat() * 100) + "%";
+    }
+
+    public void copyDataFrom(TileMachine machine)
+    {
+        if(machine == null || machine.storage == null)
+            return;
+        storage.setCapacity(machine.getMaxEnergyStored(null));
+        storage.setMaxExtract(machine.getMaxExtract(null));
+        storage.setMaxReceive(machine.getMaxReceieve(null));
+        storage.setEnergyStored(machine.getEnergyStored(null));
+    }
+
+    public void setEnergySidePerm(EnumFacing side, SideEnergyPerm perm)
+    {
+        energySides.put(side, perm);
+    }
+
+    public void nextEnergySidePerm(EnumFacing side)
+    {
+        SideEnergyPerm perm = SideEnergyPerm.getById(energySides.get(side).id).getNextPerm();
+        energySides.put(side, perm);
+    }
+
+    public SideEnergyPerm getEnergyPermForSide(EnumFacing side)
+    {
+        return energySides.get(side);
     }
 
     /* NBT */

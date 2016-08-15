@@ -1,6 +1,7 @@
 package com.brightspark.rfutilities.machine;
 
 import com.brightspark.rfutilities.RFUtilities;
+import com.brightspark.rfutilities.init.RFUItems;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -44,7 +45,7 @@ public abstract class AbstractBlockContainer extends BlockContainer
     {
         if(!hasGui)
             return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
-        if(!player.isSneaking())
+        if(!player.isSneaking() && (player.getHeldItem(hand) == null || !(player.getHeldItem(hand).getItem().equals(RFUItems.itemWrench))))
             player.openGui(RFUtilities.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
