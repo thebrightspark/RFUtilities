@@ -4,6 +4,7 @@ import com.brightspark.rfutilities.machine.AbstractBlockMachine;
 import com.brightspark.rfutilities.machine.AbstractBlockMachineDirectional;
 import com.brightspark.rfutilities.machine.TileMachine;
 import com.brightspark.rfutilities.reference.Names;
+import com.brightspark.rfutilities.util.Common;
 import com.brightspark.rfutilities.util.LogHelper;
 import com.brightspark.rfutilities.util.NBTHelper;
 import net.minecraft.block.Block;
@@ -63,6 +64,8 @@ public class ItemWrench extends ItemBasic
     }
 
     private static final String KEY_MODE = "mode";
+    private final int chatIdWrenchMode = Common.getNewChatMessageId();
+    private final int chatIdMachineSide = Common.getNewChatMessageId();
 
     public ItemWrench()
     {
@@ -111,7 +114,8 @@ public class ItemWrench extends ItemBasic
                 //Change the input/output mode of the side.
                 TileMachine machineTE = ((AbstractBlockMachine)block).getTileEntity(world, pos);
                 machineTE.nextEnergySidePerm(side);
-                player.addChatMessage(new TextComponentString(machineTE.getEnergyPermForSide(side).getChatDisplay(side)));
+                Common.addClientChatMessage(new TextComponentString(machineTE.getEnergyPermForSide(side).getChatDisplay(side)), chatIdMachineSide);
+                //player.addChatMessage(new TextComponentString(machineTE.getEnergyPermForSide(side).getChatDisplay(side)));
                 return EnumActionResult.SUCCESS;
             }
         }
@@ -140,7 +144,8 @@ public class ItemWrench extends ItemBasic
                 //Change wrench mode
                 nextMode(stack);
                 if(world.isRemote)
-                    player.addChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()));
+                    Common.addClientChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()), chatIdWrenchMode);
+                    //player.addChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()));
                 return EnumActionResult.SUCCESS;
             }
         }
@@ -157,7 +162,8 @@ public class ItemWrench extends ItemBasic
                 //Change wrench mode
                 nextMode(stack);
                 if(world.isRemote)
-                    player.addChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()));
+                    Common.addClientChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()), chatIdWrenchMode);
+                    //player.addChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()));
                 return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
             }
         }

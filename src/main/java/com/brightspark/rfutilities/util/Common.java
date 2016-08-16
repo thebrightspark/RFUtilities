@@ -5,11 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.model.ModelLoader;
 
 public class Common
 {
     private static Minecraft mc = Minecraft.getMinecraft();
+    private static int chatMessageId = 1;
 
     //Register a model
     public static void regModel(Item item)
@@ -56,5 +58,15 @@ public class Common
         if(text == null || text.length() <= 0)
             return text;
         return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+
+    public static int getNewChatMessageId()
+    {
+        return chatMessageId++;
+    }
+
+    public static void addClientChatMessage(ITextComponent message, int deleteId)
+    {
+        mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(message, deleteId);
     }
 }
