@@ -3,6 +3,7 @@ package com.brightspark.rfutilities.machine;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import com.brightspark.rfutilities.reference.Config;
+import com.brightspark.rfutilities.util.Common;
 import com.brightspark.rfutilities.util.LogHelper;
 import com.brightspark.rfutilities.util.NBTHelper;
 import net.minecraft.client.resources.I18n;
@@ -40,7 +41,7 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
         SideEnergyPerm(int id, String unlocName)
         {
             this.id = id;
-            this.unlocName = unlocName;
+            this.unlocName = LANG + unlocName;
         }
 
         public static SideEnergyPerm getById(int id)
@@ -63,16 +64,10 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
             return this == OUTPUT || this == ALL;
         }
 
-        public String getLocalisedName()
-        {
-            return I18n.format(LANG + unlocName);
-        }
-
         public String getChatDisplay(EnumFacing side)
         {
-            String sideText = side.getName();
-            sideText = sideText.substring(0, 1).toUpperCase() + sideText.substring(1);
-            return TextFormatting.BLUE + "[" + I18n.format(LANG + "mode", sideText) + " " + TextFormatting.DARK_AQUA + I18n.format(LANG + unlocName) + TextFormatting.BLUE + "]" + TextFormatting.RESET;
+            String sideText = Common.capitaliseFirstLetter(side.getName());
+            return TextFormatting.BLUE + "[" + I18n.format(LANG + "mode", sideText) + " " + TextFormatting.DARK_AQUA + I18n.format(unlocName) + TextFormatting.BLUE + "]" + TextFormatting.RESET;
         }
     }
 
@@ -112,7 +107,7 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
     protected void initSides()
     {
         for(EnumFacing side : EnumFacing.VALUES)
-            energySides.put(side, SideEnergyPerm.INPUT);
+            energySides.put(side, SideEnergyPerm.ALL);
     }
 
     public boolean hasEnergy()

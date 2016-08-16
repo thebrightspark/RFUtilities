@@ -28,7 +28,7 @@ public class ItemWrench extends ItemBasic
         TURN(0, "turn"),
         CONFIG_SIDE(1, "configSide");
 
-        private static final String LANG = "wrenchMode.";
+        public static final String LANG = "wrenchMode.";
         private static EnumWrenchMode[] allModes = new EnumWrenchMode[2];
         public final int id;
         public final String unlocName;
@@ -58,7 +58,7 @@ public class ItemWrench extends ItemBasic
 
         public String getDisplayPrefix()
         {
-            return "[" + I18n.format(LANG + "mode") + " " + I18n.format(unlocName) + "] ";
+            return TextFormatting.GOLD + "[" + I18n.format(LANG + "mode") + " " + TextFormatting.YELLOW + I18n.format(unlocName) + TextFormatting.GOLD + "] " + TextFormatting.RESET;
         }
     }
 
@@ -81,7 +81,7 @@ public class ItemWrench extends ItemBasic
         NBTHelper.setInteger(stack, KEY_MODE, mode.id);
     }
 
-    private static EnumWrenchMode getMode(ItemStack stack)
+    public static EnumWrenchMode getMode(ItemStack stack)
     {
         return EnumWrenchMode.getById(NBTHelper.getInt(stack, KEY_MODE));
     }
@@ -140,7 +140,7 @@ public class ItemWrench extends ItemBasic
                 //Change wrench mode
                 nextMode(stack);
                 if(world.isRemote)
-                    player.addChatMessage(new TextComponentString(TextFormatting.DARK_GREEN + getMode(stack).getDisplayPrefix() + TextFormatting.RESET));
+                    player.addChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()));
                 return EnumActionResult.SUCCESS;
             }
         }
@@ -157,7 +157,7 @@ public class ItemWrench extends ItemBasic
                 //Change wrench mode
                 nextMode(stack);
                 if(world.isRemote)
-                    player.addChatMessage(new TextComponentString(TextFormatting.DARK_GREEN + getMode(stack).getDisplayPrefix() + TextFormatting.RESET));
+                    player.addChatMessage(new TextComponentString(getMode(stack).getDisplayPrefix()));
                 return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
             }
         }

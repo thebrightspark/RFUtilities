@@ -6,6 +6,8 @@ item.itemWrench.name=Wrench
 wrenchMode.mode=Mode:
 wrenchMode.turn=Turn
 wrenchMode.configSide=Configure
+wrenchMode.overlay.mode=Current Wrench Mode:
+wrenchMode.overlay.side=Side %s Permission:
 
 
 //Blocks

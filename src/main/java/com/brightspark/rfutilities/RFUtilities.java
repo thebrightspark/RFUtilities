@@ -2,6 +2,7 @@ package com.brightspark.rfutilities;
 
 import com.brightspark.rfutilities.handler.ConfigHandler;
 import com.brightspark.rfutilities.handler.GuiHandler;
+import com.brightspark.rfutilities.handler.WrenchOverlayHandler;
 import com.brightspark.rfutilities.init.RFUBlocks;
 import com.brightspark.rfutilities.init.RFUItems;
 import com.brightspark.rfutilities.init.RFURecipes;
@@ -66,6 +67,7 @@ public class RFUtilities
         RFURecipes.init();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+        MinecraftForge.EVENT_BUS.register(new WrenchOverlayHandler());
 
         if(Loader.isModLoaded("Waila"))
             Waila.init();
