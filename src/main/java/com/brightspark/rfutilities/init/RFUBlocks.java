@@ -4,6 +4,8 @@ import com.brightspark.rfutilities.machine.energyStorage.BlockEnergyStorage;
 import com.brightspark.rfutilities.machine.energyStorage.TileEnergyStorage;
 import com.brightspark.rfutilities.machine.itemDetector.BlockItemDetector;
 import com.brightspark.rfutilities.machine.itemDetector.TileItemDetector;
+import com.brightspark.rfutilities.machine.oreScanner.BlockOreScanner;
+import com.brightspark.rfutilities.machine.oreScanner.TileOreScanner;
 import com.brightspark.rfutilities.reference.Names;
 import com.brightspark.rfutilities.util.Common;
 import net.minecraft.block.Block;
@@ -13,6 +15,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class RFUBlocks
 {
     public static final BlockItemDetector blockItemDetector = new BlockItemDetector();
+    public static final BlockOreScanner blockOreScanner = new BlockOreScanner();
 
     public static final BlockEnergyStorage blockCreativeEnergyStorage = new BlockEnergyStorage(Names.Blocks.CREATIVE_ENERGY_STORAGE);
 
@@ -26,17 +29,20 @@ public class RFUBlocks
     {
         regBlock(blockItemDetector);
         regBlock(blockCreativeEnergyStorage);
+        regBlock(blockOreScanner);
     }
 
     public static void regModels()
     {
         Common.regModel(blockItemDetector);
         Common.regModel(blockCreativeEnergyStorage);
+        Common.regModel(blockOreScanner);
     }
 
     public static void regTileEntities()
     {
         GameRegistry.registerTileEntity(TileItemDetector.class, Names.Blocks.ITEM_DETECTOR);
         GameRegistry.registerTileEntity(TileEnergyStorage.class, Names.Blocks.CREATIVE_ENERGY_STORAGE);
+        GameRegistry.registerTileEntity(TileOreScanner.class, Names.Blocks.ORE_SCANNER);
     }
 }

@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class WrenchOverlayHandler
 {
     private static final int fontColour = 0xFFFFFF;
-    private static final String LANG = ItemWrench.EnumWrenchMode.LANG + "overlay.";
 
     @SubscribeEvent
     public void renderOverlay(RenderGameOverlayEvent event)
@@ -35,7 +34,7 @@ public class WrenchOverlayHandler
 
             //Render wrench mode
             ItemWrench.EnumWrenchMode wrenchMode = ItemWrench.getMode(heldItem);
-            String text = I18n.format(LANG + "mode") + " " + I18n.format(wrenchMode.unlocName);
+            String text = I18n.format("wrenchMode.overlay.mode") + " " + wrenchMode.toString();
             fontRenderer.drawStringWithShadow(text, xMid - (fontRenderer.getStringWidth(text) / 2), yMid, fontColour);
 
             //Render energy side perm for machine being looked at
@@ -46,7 +45,7 @@ public class WrenchOverlayHandler
             if(te == null || !(te instanceof TileMachine))
                 return;
             TileMachine.SideEnergyPerm side = ((TileMachine)te).getEnergyPermForSide(ray.sideHit);
-            text = I18n.format(LANG + "side", Common.capitaliseFirstLetter(ray.sideHit.getName())) + " " + I18n.format(side.unlocName);
+            text = I18n.format("wrenchMode.overlay.side", Common.capitaliseFirstLetter(ray.sideHit.getName())) + " " + side.toString();
             fontRenderer.drawStringWithShadow(text, xMid - (fontRenderer.getStringWidth(text) / 2), yMid + 10, fontColour);
         }
     }

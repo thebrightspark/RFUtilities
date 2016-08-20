@@ -21,15 +21,13 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
 {
     public enum SideEnergyPerm
     {
-        ALL(0, "all"),
-        INPUT(1, "input"),
-        OUTPUT(2, "output"),
-        NONE(3, "none");
+        ALL(0),
+        INPUT(1),
+        OUTPUT(2),
+        NONE(3);
 
-        private static final String LANG = "sideEnergyPerm.";
         private static SideEnergyPerm[] allPerms = new SideEnergyPerm[4];
         public final int id;
-        public final String unlocName;
 
         static
         {
@@ -38,10 +36,15 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
                 allPerms[perm.id] = perm;
         }
 
-        SideEnergyPerm(int id, String unlocName)
+        SideEnergyPerm(int id)
         {
             this.id = id;
-            this.unlocName = LANG + unlocName;
+        }
+
+        @Override
+        public String toString()
+        {
+            return I18n.format("sideEnergyPerm." + name().toLowerCase());
         }
 
         public static SideEnergyPerm getById(int id)
@@ -67,7 +70,7 @@ public class TileMachine extends TileEntity implements IEnergyReceiver
         public String getChatDisplay(EnumFacing side)
         {
             String sideText = Common.capitaliseFirstLetter(side.getName());
-            return TextFormatting.BLUE + "[" + I18n.format(LANG + "mode", sideText) + " " + TextFormatting.DARK_AQUA + I18n.format(unlocName) + TextFormatting.BLUE + "]" + TextFormatting.RESET;
+            return TextFormatting.BLUE + "[" + I18n.format("sideEnergyPerm.mode", sideText) + " " + TextFormatting.DARK_AQUA + toString() + TextFormatting.BLUE + "]" + TextFormatting.RESET;
         }
     }
 

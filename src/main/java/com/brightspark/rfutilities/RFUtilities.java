@@ -6,6 +6,7 @@ import com.brightspark.rfutilities.handler.WrenchOverlayHandler;
 import com.brightspark.rfutilities.init.RFUBlocks;
 import com.brightspark.rfutilities.init.RFUItems;
 import com.brightspark.rfutilities.init.RFURecipes;
+import com.brightspark.rfutilities.machine.oreScanner.MessageUpdateScanner;
 import com.brightspark.rfutilities.reference.Reference;
 import com.brightspark.rfutilities.waila.Waila;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
@@ -41,6 +43,8 @@ public class RFUtilities
         }
     };
 
+    public static SimpleNetworkWrapper NETWORK;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -48,6 +52,9 @@ public class RFUtilities
 
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ConfigHandler());
+
+        NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
+        NETWORK.registerMessage(MessageUpdateScanner.Handler.class, MessageUpdateScanner.class, 0, Side.CLIENT);
 
         RFUItems.init();
         RFUBlocks.init();

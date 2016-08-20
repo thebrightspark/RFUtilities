@@ -5,7 +5,6 @@ import com.brightspark.rfutilities.machine.AbstractBlockMachineDirectional;
 import com.brightspark.rfutilities.machine.TileMachine;
 import com.brightspark.rfutilities.reference.Names;
 import com.brightspark.rfutilities.util.Common;
-import com.brightspark.rfutilities.util.LogHelper;
 import com.brightspark.rfutilities.util.NBTHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -26,13 +25,11 @@ public class ItemWrench extends ItemBasic
 {
     public enum EnumWrenchMode
     {
-        TURN(0, "turn"),
-        CONFIG_SIDE(1, "configSide");
+        TURN(0),
+        CONFIGSIDE(1);
 
-        public static final String LANG = "wrenchMode.";
         private static EnumWrenchMode[] allModes = new EnumWrenchMode[2];
         public final int id;
-        public final String unlocName;
 
         static
         {
@@ -41,10 +38,15 @@ public class ItemWrench extends ItemBasic
                 allModes[mode.id] = mode;
         }
 
-        EnumWrenchMode(int id, String unlocName)
+        EnumWrenchMode(int id)
         {
             this.id = id;
-            this.unlocName = LANG + unlocName;
+        }
+
+        @Override
+        public String toString()
+        {
+            return I18n.format("wrenchMode." + name().toLowerCase());
         }
 
         public static EnumWrenchMode getById(int id)
@@ -59,7 +61,7 @@ public class ItemWrench extends ItemBasic
 
         public String getDisplayPrefix()
         {
-            return TextFormatting.GOLD + "[" + I18n.format(LANG + "mode") + " " + TextFormatting.YELLOW + I18n.format(unlocName) + TextFormatting.GOLD + "] " + TextFormatting.RESET;
+            return TextFormatting.GOLD + "[" + I18n.format("wrenchMode.mode") + " " + TextFormatting.YELLOW + toString() + TextFormatting.GOLD + "] " + TextFormatting.RESET;
         }
     }
 
@@ -101,7 +103,6 @@ public class ItemWrench extends ItemBasic
                 //Set the facing of the block if it's a machine that can be rotated.
                 if(!world.isRemote)
                 {
-                    LogHelper.info("Setting block facing");
                     AbstractBlockMachineDirectional machine = (AbstractBlockMachineDirectional) block;
                     TileMachine machineTE = machine.getTileEntity(world, pos);
                     ((AbstractBlockMachineDirectional) block).setFacingWithWrench(world, pos, state, side);
@@ -109,7 +110,7 @@ public class ItemWrench extends ItemBasic
                     return EnumActionResult.SUCCESS;
                 }
             }
-            else if(block instanceof AbstractBlockMachine && getMode(stack) == EnumWrenchMode.CONFIG_SIDE)
+            else if(block instanceof AbstractBlockMachine && getMode(stack) == EnumWrenchMode.CONFIGSIDE)
             {
                 //Change the input/output mode of the side.
                 TileMachine machineTE = ((AbstractBlockMachine)block).getTileEntity(world, pos);

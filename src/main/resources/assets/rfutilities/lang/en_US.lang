@@ -5,7 +5,7 @@ item.itemFireballGun.name=Fireball Launcher
 item.itemWrench.name=Wrench
 wrenchMode.mode=Mode:
 wrenchMode.turn=Turn
-wrenchMode.configSide=Configure
+wrenchMode.configside=Configure
 wrenchMode.overlay.mode=Current Wrench Mode:
 wrenchMode.overlay.side=Side %s Permission:
 
@@ -13,6 +13,14 @@ wrenchMode.overlay.side=Side %s Permission:
 //Blocks
 
 tile.blockItemDetector.name=Item Detector
+tile.blockOreScanner.name=Ore Scanner
+oreScanner.chat.status=Scanning status: %s
+oreScanner.chat.status.inactive=Inactive
+oreScanner.chat.status.calculating=Setting Up
+oreScanner.chat.status.active=Active
+oreScanner.chat.status.finished=Finished
+oreScanner.chat.start=Scanning started!
+oreScanner.chat.progress=Scanning progress: %s
 
 tile.blockCreativeEnergyStorage.name=Creative Energy Storage
 
